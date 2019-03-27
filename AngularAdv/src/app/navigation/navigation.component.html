@@ -1,14 +1,12 @@
-<mat-toolbar color="primary">
-  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async">
+<mat-toolbar color="primary" class="custom-toolbar">
+  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <span>AngularAdv</span>
+  <span fxFlex fxShrink="0" fxGrow="1">AngularAdv</span>
+  <img class="avatar" src="../assets/images/avatar.jpg" alt="">
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="!(isHandset$ | async)">
+<mat-sidenav-container [hasBackdrop]="false" class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]=" 'dialog'" [mode]="'push'">
     <div class="container-menu-sideBar ">
       <mat-toolbar>Menu</mat-toolbar>
       <mat-nav-list>
@@ -19,6 +17,7 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

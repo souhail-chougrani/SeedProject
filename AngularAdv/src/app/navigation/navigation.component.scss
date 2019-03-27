@@ -1,15 +1,21 @@
 .sidenav-container {
   height: calc(100% - 50px);
-
 }
+
+
 
 .sidenav {
   width: 300px;
   position: absolute;
+  border-right: 1px solid lightgray;
 }
 
 .sidenav .mat-toolbar {
   background: inherit;
+}
+
+mat-sidenav-content {
+  margin-right: 0 !important;
 }
 
 .mat-toolbar.mat-primary {
@@ -17,4 +23,20 @@
   top: 0;
   z-index: 1;
   height: 50px;
+}
+
+.mat-drawer:not(.mat-drawer-side) {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.custom-toolbar {
+  padding-left: 0 !important;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
