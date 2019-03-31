@@ -20,6 +20,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { TableComponent } from './table/table.component';
+import { AngularMaterialModule } from './angular-material/angular-material.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     NavigationComponent,
     DashboardComponent,
     LoginComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    AngularMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

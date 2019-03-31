@@ -1,0 +1,67 @@
+table {
+  width: 100%;
+}
+
+.container {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.info {
+  display: flex;
+  flex: 1 1 15vh;
+}
+
+div.info>div {
+  flex: 1 1 50px;
+  background-color: chocolate;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+
+
+.container-table {
+  height: calc(100vh - 248px);
+  margin: 0 5px;
+}
+
+.test {
+  height: 100%;
+  margin: 1px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: space-between;
+}
+
+.actions {
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center
+}
+
+.actions button {
+  margin-left: 2px
+}
+
+.table {
+  position: absolute;
+  top: 50px;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.pagination {
+  background: lightyellow;
+  height: 50px;
+}
+
+.scroll-width::-webkit-scrollbar {
+  width: 0.3em !important;
+}
