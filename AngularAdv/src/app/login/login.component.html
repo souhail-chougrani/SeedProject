@@ -1,3 +1,33 @@
-<p>
-  login works!
-</p>
+<div style="height: 100%;" fxLayout="row">
+  <div class="container-img-login" fxLayout="row" fxFlex="2 2 75%">
+    <img src="../assets/images/login1.jpeg" alt="">
+    <h2 style="color: #fff">
+      Quickly e-enable enabled convergence <br> via economically sound.
+    </h2>
+  </div>
+  <div fxFlex="1 1 25%" fxLayout="column" fxLayoutAlign="center center">
+    <div class="login-container">
+      <h2 class="mat-h1">
+        Login
+      </h2>
+      <div>
+
+        <div fxLayout="column">
+          <mat-form-field>
+            <input matInput placeholder="Username">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="onLoginClick()">login</button>
+      </div>
+    </div>
+  </div>
+</div>

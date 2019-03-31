@@ -3,7 +3,18 @@
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
   <span fxFlex fxShrink="0" fxGrow="1">AngularAdv</span>
-  <img class="avatar" src="../assets/images/avatar.jpg" alt="">
+  <img class="avatar" [matMenuTriggerFor]="menu" src="../assets/images/avatar.jpg" alt="">
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <button mat-menu-item (click)="onLogoutClick()">
+      <mat-icon>exit_to_app
+      </mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <mat-sidenav-container [hasBackdrop]="false" class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]=" 'dialog'" [mode]="'side'">

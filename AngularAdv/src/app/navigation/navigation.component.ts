@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { AppState } from '../core/core.state';
+import { Store } from '@ngrx/store';
+import { ActionAuthLogout } from '../core/auth/auth.actions';
 
 @Component({
   selector: 'app-navigation',
@@ -16,5 +19,11 @@ export class NavigationComponent {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private store: Store<AppState>
+  ) {}
+  onLogoutClick() {
+    this.store.dispatch(new ActionAuthLogout());
+  }
 }
