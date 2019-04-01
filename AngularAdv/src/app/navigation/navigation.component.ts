@@ -5,11 +5,16 @@ import { map, tap } from 'rxjs/operators';
 import { AppState } from '../core/core.state';
 import { Store } from '@ngrx/store';
 import { ActionAuthLogout } from '../core/auth/auth.actions';
+import {
+  routeAnimations,
+  ROUTE_ANIMATIONS_ELEMENTS
+} from '../core/animations/route.animations';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+  styleUrls: ['./navigation.component.scss'],
+  animations: [routeAnimations]
 })
 export class NavigationComponent {
   isHandset$: Observable<boolean> = this.breakpointObserver

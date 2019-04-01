@@ -9,6 +9,7 @@ import {
   ActionAuthLogout
 } from './auth.actions';
 import { tap } from 'rxjs/operators';
+import { LoginService } from 'src/app/login/login.service';
 
 export const AUTH_KEY = 'AUTH';
 
