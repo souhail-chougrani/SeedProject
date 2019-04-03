@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { JwtService } from '../core/auth/jwt.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { UserInfo } from './user.model';
+import { UserInfo, User } from './user.model';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 const helper = new JwtHelperService();
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LoginService {
   userInfo = new UserInfo();
   constructor(
@@ -17,10 +17,10 @@ export class LoginService {
     private router: Router
   ) {}
 
-  Auth(username, password) {
+  Auth(e: User) {
     // const data =
     //   'grant_type=password&username=' + username + '&password=' + password;
-    const data: any = { login: username, password: password };
+    const data: any = { login: e.login, password: e.password };
     return this.http.post('Auth', data).pipe(
       map((res: any) => {
         if (res) {
@@ -55,5 +55,8 @@ export class LoginService {
     if (this.cookieService.check('Token')) {
       this.setUserInfo(this.cookieService.get('Token'));
     }
+  }
+  getdata() {
+    return this.http.get('Global/Villes');
   }
 }

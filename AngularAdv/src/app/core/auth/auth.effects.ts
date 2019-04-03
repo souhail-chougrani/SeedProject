@@ -8,8 +8,17 @@ import {
   AuthActionTypes,
   ActionAuthLogout
 } from './auth.actions';
-import { tap } from 'rxjs/operators';
+import {
+  tap,
+  map,
+  switchMap,
+  exhaust,
+  exhaustMap,
+  catchError
+} from 'rxjs/operators';
 import { LoginService } from 'src/app/login/login.service';
+import { User } from 'src/app/login/user.model';
+import { of } from 'rxjs';
 
 export const AUTH_KEY = 'AUTH';
 
@@ -18,15 +27,22 @@ export class AuthEffects {
   constructor(
     private actions$: Actions<Action>,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {}
 
   @Effect({ dispatch: false })
   login = this.actions$.pipe(
     ofType<ActionAuthLogin>(AuthActionTypes.LOGIN),
-    tap(() => {
-      this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true }),
-        this.router.navigate(['home']);
+    map((action: ActionAuthLogin) => action.payload),
+    exhaustMap(e => {
+      return this.loginService.Auth(e).pipe(
+        tap(() => {
+          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true }),
+            this.router.navigate(['home']);
+        }),
+        catchError(err => of([]))
+      );
     })
   );
 
@@ -34,8 +50,8 @@ export class AuthEffects {
   logout = this.actions$.pipe(
     ofType<ActionAuthLogout>(AuthActionTypes.LOGOUT),
     tap(() => {
-      this.router.navigateByUrl('/login');
-      this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: false });
+      this.loginService.logOut(),
+        this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: false });
     })
   );
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material';
+import { LoginService } from '../login/login.service';
+import { TableService } from './table.service';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -75,7 +77,6 @@ export class TableComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
-
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -99,7 +100,9 @@ export class TableComponent implements OnInit {
       this.selection.isSelected(row) ? 'deselect' : 'select'
     } row ${row.position + 1}`;
   }
-  constructor() {}
+  constructor(private tableService: TableService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tableService.getData().subscribe();
+  }
 }

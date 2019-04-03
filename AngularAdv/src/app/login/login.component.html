@@ -13,16 +13,19 @@
       <div>
 
         <div fxLayout="column">
-          <mat-form-field>
-            <input matInput placeholder="Username">
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-          </mat-form-field>
+          <form [formGroup]="UserForm">
+            <mat-form-field>
+              <input formControlName="login" matInput placeholder="Username">
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="password" matInput placeholder="Enter your password"
+                [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </form>
         </div>
       </div>
       <div>

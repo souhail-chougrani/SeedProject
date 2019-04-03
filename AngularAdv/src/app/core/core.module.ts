@@ -11,6 +11,9 @@ import { reducers, metaReducers } from './core.state';
 import { environment } from 'src/environments/environment';
 import { AuthEffects } from './auth/auth.effects';
 import { LocalStorageService } from './local-storage/local-storage.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { PrefixApiInterceptor } from './helpers/prefix-api.interceptor';
+import { TokenInterceptor } from './helpers/token.interceptor';
 
 @NgModule({
   declarations: [],
@@ -25,7 +28,11 @@ import { LocalStorageService } from './local-storage/local-storage.service';
           name: 'Angular NgRx Material '
         })
   ],
-  providers: [LocalStorageService]
+  providers: [
+    LocalStorageService,
+    { provide: HTTP_INTERCEPTORS, useClass: PrefixApiInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ]
 })
 export class CoreModule {
   constructor(

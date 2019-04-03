@@ -7,5 +7,5 @@ export class UserInfo {
 }
 export class User {
   password?: string;
-  userName?: string;
+  login?: string;
 }

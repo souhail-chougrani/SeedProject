@@ -15,6 +15,8 @@ import { TableComponent } from './table/table.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -31,12 +33,12 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-
+    ReactiveFormsModule,
     FlexLayoutModule,
     AngularMaterialModule,
     CoreModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
