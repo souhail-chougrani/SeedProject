@@ -1,0 +1,19 @@
+export const ColumnsTable = [
+  'casBareme',
+  'client',
+  'compagnie',
+  'compagnieAdv',
+  'dateAccident',
+  'dateMEC',
+  'dateOM',
+  'expert',
+  'garagiste',
+  'intermediaire',
+  'matricule',
+  'matriculeAdv',
+  'nPolice',
+  'nordre',
+  'numSinistre',
+  'typeDossier',
+  'vehicule'
+];

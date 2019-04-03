@@ -12,8 +12,8 @@ import { environment } from 'src/environments/environment';
 import { AuthEffects } from './auth/auth.effects';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { PrefixApiInterceptor } from './helpers/prefix-api.interceptor';
 import { TokenInterceptor } from './helpers/token.interceptor';
+import { PrefixApiInterceptor } from './helpers/prefix-api.interceptor';
 
 @NgModule({
   declarations: [],

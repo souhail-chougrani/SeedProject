@@ -26,10 +26,10 @@
         <div>
           <mat-divider></mat-divider>
 
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
             <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
+            <!-- <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? masterToggle() : null"
                   [checked]="selection.hasValue() && isAllSelected()"
@@ -41,35 +41,87 @@
                   [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                 </mat-checkbox>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Position Column -->
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef> No. </th>
-              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            <ng-container matColumnDef="casBareme">
+              <th mat-header-cell *matHeaderCellDef> casBareme </th>
+              <td mat-cell *matCellDef="let element"> {{element.casBareme}} </td>
             </ng-container>
 
             <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <ng-container matColumnDef="client">
+              <th mat-header-cell *matHeaderCellDef> client </th>
+              <td mat-cell *matCellDef="let element"> {{element.client}} </td>
             </ng-container>
 
             <!-- Weight Column -->
-            <ng-container matColumnDef="weight">
-              <th mat-header-cell *matHeaderCellDef> Weight </th>
-              <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            <ng-container matColumnDef="compagnie">
+              <th mat-header-cell *matHeaderCellDef> compagnie </th>
+              <td mat-cell *matCellDef="let element"> {{element.compagnie}} </td>
             </ng-container>
 
             <!-- Symbol Column -->
-            <ng-container matColumnDef="symbol">
-              <th mat-header-cell *matHeaderCellDef> Symbol </th>
-              <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            <ng-container matColumnDef="compagnieAdv">
+              <th mat-header-cell *matHeaderCellDef> compagnieAdv </th>
+              <td mat-cell *matCellDef="let element"> {{element.compagnieAdv}} </td>
+            </ng-container>
+            <ng-container matColumnDef="dateAccident">
+              <th mat-header-cell *matHeaderCellDef> dateAccident </th>
+              <td mat-cell *matCellDef="let element"> {{element.dateAccident}} </td>
+            </ng-container>
+            <ng-container matColumnDef="dateMEC">
+              <th mat-header-cell *matHeaderCellDef> dateMEC </th>
+              <td mat-cell *matCellDef="let element"> {{element.dateMEC}} </td>
+            </ng-container>
+            <ng-container matColumnDef="dateOM">
+              <th mat-header-cell *matHeaderCellDef> dateOM </th>
+              <td mat-cell *matCellDef="let element"> {{element.dateOM}} </td>
+            </ng-container>
+            <ng-container matColumnDef="expert">
+              <th mat-header-cell *matHeaderCellDef> expert </th>
+              <td mat-cell *matCellDef="let element"> {{element.expert}} </td>
+            </ng-container>
+            <ng-container matColumnDef="intermediaire">
+              <th mat-header-cell *matHeaderCellDef> intermediaire </th>
+              <td mat-cell *matCellDef="let element"> {{element.intermediaire}} </td>
+            </ng-container>
+            <ng-container matColumnDef="matricule">
+              <th mat-header-cell *matHeaderCellDef> matricule </th>
+              <td mat-cell *matCellDef="let element"> {{element.matricule}} </td>
+            </ng-container>
+            <ng-container matColumnDef="matriculeAdv">
+              <th mat-header-cell *matHeaderCellDef> matriculeAdv </th>
+              <td mat-cell *matCellDef="let element"> {{element.matriculeAdv}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nPolice">
+              <th mat-header-cell *matHeaderCellDef> nPolice </th>
+              <td mat-cell *matCellDef="let element"> {{element.nPolice}} </td>
+            </ng-container>
+            <ng-container matColumnDef="vehicule">
+              <th mat-header-cell *matHeaderCellDef> vehicule </th>
+              <td mat-cell *matCellDef="let element"> {{element.vehicule}} </td>
+            </ng-container>
+            <ng-container matColumnDef="typeDossier">
+              <th mat-header-cell *matHeaderCellDef> typeDossier </th>
+              <td mat-cell *matCellDef="let element"> {{element.typeDossier}} </td>
+            </ng-container>
+            <ng-container matColumnDef="numSinistre">
+              <th mat-header-cell *matHeaderCellDef> numSinistre </th>
+              <td mat-cell *matCellDef="let element"> {{element.numSinistre}} </td>
+            </ng-container>
+            <ng-container matColumnDef="garagiste">
+              <th mat-header-cell *matHeaderCellDef> garagiste </th>
+              <td mat-cell *matCellDef="let element"> {{element.garagiste}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nordre">
+              <th mat-header-cell *matHeaderCellDef> nordre </th>
+              <td mat-cell *matCellDef="let element"> {{element.nordre}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
-            </tr>
+            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr> -->
           </table>
         </div>
       </div>

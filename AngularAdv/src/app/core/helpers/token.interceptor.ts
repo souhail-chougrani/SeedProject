@@ -6,7 +6,6 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { JwtService } from '../auth/jwt.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
