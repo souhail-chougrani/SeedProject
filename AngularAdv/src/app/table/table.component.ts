@@ -50,40 +50,39 @@ export class TableComponent implements OnInit {
   ngOnInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    merge(
-      this.sort.sortChange.pipe(
-        map((el: any) => {
-          this.OrderBy = {
-            OrderBy: { column: el.active, direction: el.direction }
-          };
-        })
-      ),
-      this.paginator.page.pipe(
-        map((e: any) => {
-          this.paginate = {
-            start: e.pageIndex * 10,
-            count: e.pageSize
-          };
-        })
-      )
-    )
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.tableService.getData(this.paginate, this.OrderBy);
-        }),
-        map((data: any) => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.resultsLength = data.count;
-
-          return data.result;
-        })
-      )
-      .subscribe((res: any) => (this.dataSource.data = res));
+    this.getData().subscribe((res: any) => (this.dataSource.data = res));
     // this.tableService
     //   .getData()
     //   .subscribe((res: any) => (this.dataSource.data = res.result));
+  }
+
+  getData() {
+    const mappingSort = map((el: any) => {
+      this.OrderBy = {
+        OrderBy: { column: el.active, direction: el.direction }
+      };
+    });
+    const mappingPaginator = map((e: any) => {
+      this.paginate = {
+        start: e.pageIndex * 10,
+        count: e.pageSize
+      };
+    });
+    return merge(
+      this.sort.sortChange.pipe(mappingSort),
+      this.paginator.page.pipe(mappingPaginator)
+    ).pipe(
+      startWith({}),
+      switchMap(() => {
+        this.isLoadingResults = true;
+        return this.tableService.getData(this.paginate, this.OrderBy);
+      }),
+      map((data: any) => {
+        // Flip flag to show that loading has finished.
+        this.isLoadingResults = false;
+        this.resultsLength = data.count;
+        return data.result;
+      })
+    );
   }
 }
