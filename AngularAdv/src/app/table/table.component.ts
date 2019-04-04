@@ -5,6 +5,7 @@ import { LoginService } from '../login/login.service';
 import { TableService } from './table.service';
 import { ColumnsTable } from './Table-utils';
 import { merge } from 'rxjs';
+import { switchMap, map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -15,6 +16,8 @@ export class TableComponent implements OnInit {
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  resultsLength = 0;
+  isLoadingResults = false;
   // selection = new SelectionModel<PeriodicElement>(true, []);
   /** Whether the number of selected elements matches the total number of rows. */
   // isAllSelected() {
@@ -40,13 +43,47 @@ export class TableComponent implements OnInit {
   //   } row ${row.position + 1}`;
   // }
   constructor(private tableService: TableService) {}
-
+  OrderBy: { OrderBy: { column: string; direction: string } };
+  paginate: { start: number; count: number };
+  // {active: "dateOM", direction: "asc"}
+  // {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100}
   ngOnInit() {
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe()
-      .subscribe(res => console.log(res));
-    this.tableService
-      .getData()
-      .subscribe((res: any) => (this.dataSource.data = res.result));
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(
+      this.sort.sortChange.pipe(
+        map((el: any) => {
+          this.OrderBy = {
+            OrderBy: { column: el.active, direction: el.direction }
+          };
+        })
+      ),
+      this.paginator.page.pipe(
+        map((e: any) => {
+          this.paginate = {
+            start: e.pageIndex * 10,
+            count: e.pageSize
+          };
+        })
+      )
+    )
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.tableService.getData(this.paginate, this.OrderBy);
+        }),
+        map((data: any) => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.resultsLength = data.count;
+
+          return data.result;
+        })
+      )
+      .subscribe((res: any) => (this.dataSource.data = res));
+    // this.tableService
+    //   .getData()
+    //   .subscribe((res: any) => (this.dataSource.data = res.result));
   }
 }
