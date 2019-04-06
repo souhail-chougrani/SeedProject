@@ -5,7 +5,11 @@ import { LoginService } from '../login/login.service';
 import { TableService } from './table.service';
 import { ColumnsTable } from './Table-utils';
 import { merge } from 'rxjs';
-import { switchMap, map, startWith } from 'rxjs/operators';
+import { switchMap, map, startWith, tap } from 'rxjs/operators';
+import { AppState } from '../core/core.state';
+import { Store } from '@ngrx/store';
+import * as TABLE from '../core/table/table.actions';
+import { selectTable } from '../core/table/table.reducer';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -16,7 +20,7 @@ export class TableComponent implements OnInit {
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  resultsLength = 0;
+  resultsLength = 10000;
   isLoadingResults = false;
   // selection = new SelectionModel<PeriodicElement>(true, []);
   /** Whether the number of selected elements matches the total number of rows. */
@@ -42,18 +46,23 @@ export class TableComponent implements OnInit {
   //     this.selection.isSelected(row) ? 'deselect' : 'select'
   //   } row ${row.position + 1}`;
   // }
-  constructor(private tableService: TableService) {}
+  constructor(
+    private tableService: TableService,
+    private store: Store<AppState>
+  ) {}
   OrderBy: { OrderBy: { column: string; direction: string } };
   paginate: { start: number; count: number };
-  // {active: "dateOM", direction: "asc"}
-  // {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100}
+
   ngOnInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    this.getData().subscribe((res: any) => (this.dataSource.data = res));
-    // this.tableService
-    //   .getData()
-    //   .subscribe((res: any) => (this.dataSource.data = res.result));
+    // this.getData().subscribe((res: any) => (this.dataSource.data = res));
+
+    this.getData().subscribe();
+    this.store
+      .select(selectTable)
+      .pipe(tap(e => console.log(e)))
+      .subscribe();
   }
 
   getData() {
@@ -72,17 +81,26 @@ export class TableComponent implements OnInit {
       this.sort.sortChange.pipe(mappingSort),
       this.paginator.page.pipe(mappingPaginator)
     ).pipe(
-      startWith({}),
-      switchMap(() => {
-        this.isLoadingResults = true;
-        return this.tableService.getData(this.paginate, this.OrderBy);
-      }),
-      map((data: any) => {
-        // Flip flag to show that loading has finished.
-        this.isLoadingResults = false;
-        this.resultsLength = data.count;
-        return data.result;
-      })
+      tap(() =>
+        this.store.dispatch(
+          new TABLE.LoadTables({
+            dataSearch: {},
+            OrderBy: this.OrderBy,
+            paginate: this.paginate
+          })
+        )
+      )
     );
+    // startWith({})
+    //   switchMap(() => {
+    //     this.isLoadingResults = true;
+    //     return this.tableService.getData(this.paginate, this.OrderBy);
+    //   }),
+    //   map((data: any) => {
+    //     this.isLoadingResults = false;
+    //     this.resultsLength = data.count;
+    //     return data.result;
+    //   })
+    // );
   }
 }
