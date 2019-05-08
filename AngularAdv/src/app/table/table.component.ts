@@ -1,15 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import {
+  MatTableDataSource,
+  MatPaginator,
+  MatSort,
+  MatSortable,
+  SortDirection
+} from '@angular/material';
 import { LoginService } from '../login/login.service';
 import { TableService } from './table.service';
 import { ColumnsTable } from './Table-utils';
 import { merge } from 'rxjs';
-import { switchMap, map, startWith, tap } from 'rxjs/operators';
+import { switchMap, startWith, tap, skip, map, take } from 'rxjs/operators';
 import { AppState } from '../core/core.state';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as TABLE from '../core/table/table.actions';
-import { selectTable } from '../core/table/table.reducer';
+import {
+  selectTable,
+  selectOrderBy,
+  selectPaginate,
+  selectData
+} from '../core/table/table.reducer';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -50,47 +61,59 @@ export class TableComponent implements OnInit {
     private tableService: TableService,
     private store: Store<AppState>
   ) {}
-  OrderBy: { OrderBy: { column: string; direction: string } };
-  paginate: { start: number; count: number };
 
   ngOnInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    // this.getData().subscribe((res: any) => (this.dataSource.data = res));
-
-    this.getData().subscribe();
+    this.store.dispatch(new TABLE.LoadTable());
     this.store
-      .select(selectTable)
-      .pipe(tap(e => console.log(e)))
+      .pipe(select(selectData))
+      .subscribe((res: any) => (this.dataSource.data = res.result));
+    this.sort.sortChange
+      .pipe(
+        tap(e =>
+          this.store.dispatch(
+            new TABLE.Sort({
+              OrderBy: { column: e.active, direction: e.direction }
+            })
+          )
+        )
+      )
       .subscribe();
+    this.store
+      .select(selectOrderBy)
+      .pipe(
+        tap(e => {
+          this.sort.active = e.OrderBy.column;
+          this.sort.direction = <SortDirection>e.OrderBy.direction;
+        }),
+        switchMap(e => this.tableService.getData(e))
+      )
+      .subscribe((res: any) => (this.dataSource.data = res.result));
+
+    this.paginator.page
+      .pipe(
+        tap(e =>
+          this.store.dispatch(
+            new TABLE.Paginate({
+              start: e.pageIndex * 10,
+              count: e.pageSize
+            })
+          )
+        )
+      )
+      .subscribe();
+    this.store
+      .select(selectPaginate)
+      .pipe(
+        tap(e => {
+          this.paginator.pageIndex = e.start / 10;
+          this.paginator.pageSize = e.count;
+        }),
+        switchMap(e => this.tableService.getData(e))
+      )
+      .subscribe((res: any) => (this.dataSource.data = res.result));
   }
 
   getData() {
-    const mappingSort = map((el: any) => {
-      this.OrderBy = {
-        OrderBy: { column: el.active, direction: el.direction }
-      };
-    });
-    const mappingPaginator = map((e: any) => {
-      this.paginate = {
-        start: e.pageIndex * 10,
-        count: e.pageSize
-      };
-    });
-    return merge(
-      this.sort.sortChange.pipe(mappingSort),
-      this.paginator.page.pipe(mappingPaginator)
-    ).pipe(
-      tap(() =>
-        this.store.dispatch(
-          new TABLE.LoadTables({
-            dataSearch: {},
-            OrderBy: this.OrderBy,
-            paginate: this.paginate
-          })
-        )
-      )
-    );
     // startWith({})
     //   switchMap(() => {
     //     this.isLoadingResults = true;
@@ -103,4 +126,13 @@ export class TableComponent implements OnInit {
     //   })
     // );
   }
+
+  paginnation() {}
+}
+export class OrderBy {
+  OrderBy: { column: string; direction: string };
+}
+export class Paginate {
+  start: number;
+  count: number;
 }

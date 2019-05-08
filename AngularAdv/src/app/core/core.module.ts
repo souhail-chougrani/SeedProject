@@ -14,13 +14,14 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './helpers/token.interceptor';
 import { PrefixApiInterceptor } from './helpers/prefix-api.interceptor';
+import { TableEffects } from './table/table.effects';
 
 @NgModule({
   declarations: [],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, TableEffects]),
 
     environment.production
       ? []
