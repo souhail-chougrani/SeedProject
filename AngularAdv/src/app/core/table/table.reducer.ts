@@ -51,6 +51,12 @@ export const selectError = createSelector(
   selectTable,
   (state: State) => state.error
 );
+export const selectOrderByPagination = createSelector(
+  selectTable,
+  (state: State) => {
+    return { OrderBy: state.OrderBy, paginate: state.paginate };
+  }
+);
 export const selectOrderBy = createSelector(
   selectTable,
   (state: State) => state.OrderBy

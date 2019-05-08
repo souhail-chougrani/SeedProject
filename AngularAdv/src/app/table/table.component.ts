@@ -19,7 +19,8 @@ import {
   selectTable,
   selectOrderBy,
   selectPaginate,
-  selectData
+  selectData,
+  selectOrderByPagination
 } from '../core/table/table.reducer';
 @Component({
   selector: 'app-table',
@@ -63,34 +64,23 @@ export class TableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(new TABLE.LoadTable());
-    this.store
-      .pipe(select(selectData))
-      .subscribe((res: any) => (this.dataSource.data = res.result));
-    this.sort.sortChange
-      .pipe(
-        tap(e =>
+    merge(
+      this.sort.sortChange.pipe(
+        tap(e => {
           this.store.dispatch(
             new TABLE.Sort({
               OrderBy: { column: e.active, direction: e.direction }
             })
-          )
-        )
-      )
-      .subscribe();
-    this.store
-      .select(selectOrderBy)
-      .pipe(
-        tap(e => {
-          this.sort.active = e.OrderBy.column;
-          this.sort.direction = <SortDirection>e.OrderBy.direction;
-        }),
-        switchMap(e => this.tableService.getData(e))
-      )
-      .subscribe((res: any) => (this.dataSource.data = res.result));
-
-    this.paginator.page
-      .pipe(
+          ),
+            this.store.dispatch(
+              new TABLE.Paginate({
+                start: 0,
+                count: 10
+              })
+            );
+        })
+      ),
+      this.paginator.page.pipe(
         tap(e =>
           this.store.dispatch(
             new TABLE.Paginate({
@@ -100,15 +90,17 @@ export class TableComponent implements OnInit {
           )
         )
       )
-      .subscribe();
+    ).subscribe();
     this.store
-      .select(selectPaginate)
+      .select(selectOrderByPagination)
       .pipe(
         tap(e => {
-          this.paginator.pageIndex = e.start / 10;
-          this.paginator.pageSize = e.count;
+          this.sort.active = e.OrderBy.OrderBy.column;
+          this.sort.direction = <SortDirection>e.OrderBy.OrderBy.direction;
+          this.paginator.pageIndex = e.paginate.start / 10;
+          this.paginator.pageSize = e.paginate.count;
         }),
-        switchMap(e => this.tableService.getData(e))
+        switchMap(e => this.tableService.getData(e.OrderBy.OrderBy, e.paginate))
       )
       .subscribe((res: any) => (this.dataSource.data = res.result));
   }
