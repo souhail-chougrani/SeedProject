@@ -8,6 +8,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  
   {
     path: 'home',
     component: NavigationComponent,
@@ -15,7 +16,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dash', pathMatch: 'full' },
       { path: 'dash', component: DashboardComponent },
-      { path: 'table', component: TableComponent }
+      { path: 'table', component: TableComponent },
+      { path: 'transcodage', loadChildren: './transcodage/transcodage.module#TranscodageModule'},
     ]
   },
   {

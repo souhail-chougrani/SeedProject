@@ -1,0 +1,17 @@
+.col {
+    padding-top: 5px;
+    top: 0px;
+    position: sticky;
+    z-index: 2;
+    background-color: #FAFAFA;
+    left: 0;
+    right: 0;
+    height: 50px;
+  }
+  /deep/ .mat-button{
+    padding: 0 0 0 16px;
+
+  }
+  /deep/ .cdk-overlay-connected-position-bounding-box{
+      margin-top: 5px
+  }

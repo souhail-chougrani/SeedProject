@@ -17,6 +17,7 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+// import { TranscodageModule } from './transcodage/transcodage.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CookieService } from 'ngx-cookie-service';
     ReactiveFormsModule,
     FlexLayoutModule,
     AngularMaterialModule,
-    CoreModule
+    CoreModule,
+    // TranscodageModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
